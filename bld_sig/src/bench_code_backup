@@ -1,0 +1,316 @@
+#[bench]
+fn bench_GQ_keygen_1024(b: &mut Bencher) {
+    b.iter(||keygen(1024));
+}
+
+#[bench]
+fn bench_GQ_keygen_2048(b: &mut Bencher) {
+    b.iter(||keygen(2048));
+}
+
+#[bench]
+fn bench_GQ_keygen_3072(b: &mut Bencher) {
+    b.iter(||keygen(2048));
+}
+
+#[bench]
+fn bench_GQ_sign_1024(b: &mut Bencher) {
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let (B, J, n, v) =keygen(1024);
+    b.iter(||sign(&n, &v, &B, &message));
+}
+
+#[bench]
+fn bench_GQ_sign_2048(b: &mut Bencher) {
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let (B, J, n, v) =keygen(2048);
+    b.iter(||sign(&n, &v, &B, &message));
+}
+
+#[bench]
+fn bench_GQ_sign_3072(b: &mut Bencher) {
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let (B, J, n, v) =keygen(3072);
+    b.iter(||sign(&n, &v, &B, &message));
+}
+
+#[bench]
+fn bench_CL_GQ_keygen_687(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let lam: usize = 687;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||keygen_cl(lam));
+}
+
+#[bench]
+fn bench_CL_GQ_sign_687(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 687;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||sign_cl(&Delta, &v, &B, &message));
+}
+
+#[bench]
+fn bench_CL_GQ_keygen_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let lam: usize = 1208;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||keygen_cl(lam));
+}
+
+#[bench]
+fn bench_CL_GQ_sign_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||sign_cl(&Delta, &v, &B, &message));
+}
+
+#[bench]
+fn bench_CL_GQ_keygen_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let lam: usize = 1665;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||keygen_cl(lam));
+}
+
+#[bench]
+fn bench_CL_GQ_sign_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (Delta, v, J, B) = keygen_cl(lam);
+    b.iter(||sign_cl(&Delta, &v, &B, &message));
+}
+
+/*
+#[bench]
+fn bench_2p_CL_GQ_keygen_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_2p_GQ_sign_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_3p_CL_GQ_keygen_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_3p_GQ_sign_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_4p_CL_GQ_keygen_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_4p_GQ_sign_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_5p_CL_GQ_keygen_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_5p_GQ_sign_768(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 768;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_2p_CL_GQ_keygen_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_2p_GQ_sign_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_3p_CL_GQ_keygen_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_3p_GQ_sign_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_4p_CL_GQ_keygen_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_4p_GQ_sign_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_5p_CL_GQ_keygen_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_5p_GQ_sign_1208(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1208;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_2p_CL_GQ_keygen_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_2p_GQ_sign_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(2, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_3p_CL_GQ_keygen_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_3p_GQ_sign_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(3, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_4p_CL_GQ_keygen_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_4p_GQ_sign_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(4, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+
+#[bench]
+fn bench_5p_CL_GQ_keygen_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    let (t, h) = isign(party_keys_vec, Delta, v.clone(), J.clone(), lam, message.clone());
+    b.iter(||keygen_n_parties(2, lam));
+}
+
+#[bench]
+fn bench_5p_GQ_sign_1665(b: &mut Bencher) {
+    unsafe { pari_init(10000000000, 2) };
+    let message  = HSha256::create_hash(&[&BigInt::from(1234)]);
+    let lam: usize = 1665;
+    let (party_keys_vec,Delta,v,J) = keygen_n_parties(5, lam);
+    b.iter(||isign(party_keys_vec.clone(), Delta.clone(), v.clone(), J.clone(), lam, message.clone()));
+}
+*/

@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+hsmcl_nizk_prove_112_v0,,,,,1364870804.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1361839219.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1371115415.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1368597962.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1361459860.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1382902088.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1371200358.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1364193685.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1360701955.0,ns,1
+hsmcl_nizk_prove_112_v0,,,,,1370435968.0,ns,1

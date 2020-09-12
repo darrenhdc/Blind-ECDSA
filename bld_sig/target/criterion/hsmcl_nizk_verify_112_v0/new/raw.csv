@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+hsmcl_nizk_verify_112_v0,,,,,546974877.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,540858757.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,539135103.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,544124197.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,540570711.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,546148776.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,539346887.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,537845562.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,547779556.0,ns,1
+hsmcl_nizk_verify_112_v0,,,,,548828251.0,ns,1

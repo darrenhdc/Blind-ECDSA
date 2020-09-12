@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/hdcui/blind_sig_project/bld_sig/target/debug/build/typenum-1ca3f6b2ee6334be/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/hdcui/blind_sig_project/bld_sig/target/debug/build/typenum-1ca3f6b2ee6334be/out/op.rs

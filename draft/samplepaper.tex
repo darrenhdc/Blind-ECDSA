@@ -1,0 +1,312 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{matrix,shapes,arrows,positioning,chains, calc}
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage[font=footnotesize]{subfig}
+%\usepackage{amsthm}
+
+\newcommand{\sk}{{\sf sk}}
+\newcommand{\pk}{{\sf pk}}
+\newcommand{\SK}{{\sf SK}}
+\newcommand{\PK}{{\sf PK}}
+
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+	\ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+	\arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\usepackage{enumerate}
+
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{definition}{Definition}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+	
+	\SetKwProg{Fn}{Procedure}{:}{\KwRet}
+	\SetKwInput{KwParam}{Param}                % Set the Input
+	\SetKwInput{KwInput}{Input}                % Set the Input
+	\SetKwInput{KwWitness}{Witness}              % set the Output
+	
+	\title{Blind Sig}
+	
+	
+\author{}
+\institute{}
+	
+	%\titlerunning{Abbreviated paper title}
+	% If the paper title is too long for the running head, you can set
+	% an abbreviated paper title here
+	%
+	%\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
+	%Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+	%Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+	%%
+	%\authorrunning{F. Author et al.}
+	%% First names are abbreviated in the running head.
+	%% If there are more than two authors, 'et al.' is used.
+	%%
+	%\institute{Princeton University, Princeton NJ 08544, USA \and
+	%Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+	%\email{lncs@springer.com}\\
+	%\url{http://www.springer.com/gp/computer-science/lncs} \and
+	%ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+	%\email{\{abc,lncs\}@uni-heidelberg.de}}
+	%
+	\maketitle              % typeset the header of the contribution
+	%
+	
+	\begin{abstract}
+...
+		
+		\keywords{...} 
+	\end{abstract}
+	
+	%The abstract should briefly summarize the contents of the paper in
+	%150--250 words.
+	\section{HSM-CL Cryptosystem}
+	review HSM-CL group and encryption scheme...
+	
+	\section{The Blind ECDSA over HSM-CL}
+Suppose that the group generator $\hat{G}$ of the elliptic curve used by the elliptic curve digital signature algorithm (ECDSA) has a large prime order $q$. Assume that the recipient wishes the signer (with the public key $\PK = \hat{G}^\SK$) to produce a blind signature on the hash value $h = H(m)$ of his message $m$, the blind ECDSA between the recipient $\mathcal{R}$ and the signer $\mathcal{S}$ can be described as follows:
+
+	\begin{itemize}
+	\item Step 1. The signer $\mathcal{S}$ randomly chooses an integer $k_1 \in \mathbb{Z}_q$  and computes $K_1 =  \hat{G}^{k_1}$ and sends it to the recipient $\mathcal{R}$.\\
+	
+	\item Step 2. After receiving $K_1$ from $\mathcal{S}$, the recipient $\mathcal{R}$ randomly chooses $k_2 \in \mathbb{Z}_q$ and computes $K = K_1^{ k_2}$ and denote by $(K_x,K_y)$ the $x$-coordinator and $y$-coordinator of ECC point $K$.\\
+	
+	Next, the recipient $\mathcal{R}$ randomly picks $\sk \in \mathbb{Z}_q$ and computes $\pk = g_q^{\sk}$ \\(key generation for HSM-CL encryption scheme). \\
+	
+	Then $\mathcal{R}$ randomly chooses $r_1, r_2 \in \mathbb{Z}_q$ and computes (follow HSM-CL Enc)
+	
+	\[
+	C_1 = (x_1, x_2)=(g_q^{r_1}, f^h \pk^ {r_1}), \quad
+	C_2 = (y_1,y_2)= (g_q^{r_2}, f^{K_x} \pk^ {r_2})
+	\]
+		
+	and	generate a NIZK proof $\pi$ for the well-formedness of $C_1$ and $C_2$.\\
+
+	\item Step 3. After receiving $C_1, C_2, \pi$, $\mathcal{S}$ firstly checks the validity of $(C_1,C_2)$ by $\pi$. If invalid, reject and abort; if valid, $\mathcal{S}$ randomly chooses $r'_1, r'_2,r'_3 \in \mathbb{Z}_q$ and computes
+	
+	\begin{align*}	
+	\alpha&=(\alpha_1, \alpha_2)= (y_1^\SK  g_q^{r'_1}, y_2^\SK \pk ^{r'_1})\\
+	\beta&= (\beta_1, \beta_2) = (\alpha_1 x_1 g_q^{r'_2}, \alpha_2 x_2 \pk^{r'_2})\\
+	\gamma&=(\gamma_1, \gamma_2)= (\beta_1^{k_1}  g_q^{r'_3}, \beta_2^{k_1} \pk ^{r'_3})
+	\end{align*}
+	
+	and sends $\gamma$ to $\mathcal{R}$.\\
+
+	\item Step 4.
+	After receiving $\gamma$, the recipient $\mathcal{R}$ computes 
+	\[
+	s = k_1^{-1} \frac{\gamma_2}{\gamma_1^\sk}
+	\]
+	
+	In the end, the recipient $\mathcal{R}$ obtains a blind signature $(K_x,s)$.
+	
+\end{itemize}
+
+	\section{Zero-knowledge Proof}
+Let	$(\tilde{s}, g, f, g_q, \tilde{G}, G, F, G^q) \gets {\sf Gen}_{{\rm HSM}, q}(1^\lambda)$. The ECC group generated by generator $\hat{G}$ has a large prime order $q$.
+We need to prove the following relation when sending $(C_1,C_2)$:
+\begin{align*}	
+&\mathcal{R}_{\sf Enc} = \{ (x_1,x_2,y_1,y_2,\pk,f,g_q) : (h, K_x, r_1, r_2, \sk) |   \\
+&x_1 = g_q^{r_1} \wedge x_2 = f^h \pk^ {r_1} \wedge y_1= g_q^{r_2} \wedge y_2= f^{K_x} \pk^ {r_2}.\}
+\end{align*}
+where $B = 2^{\lambda+\epsilon_d+2}  \tilde{s}$, $\epsilon_d = 80$.
+
+\begin{enumerate}
+	
+	\item		Prover chooses %$\tau, s_\rho, s_\tau 
+	$s_1, s_2, s_h, s_x \xleftarrow{\$}  [-B, B]$  and computes:
+	\[
+	%T = g_1^{\rho} g_2^{\tau}, \quad R= g_1^{s_\rho} g_2^{s_\tau}, \quad 
+ S_1 =g_q^{s_1}, \quad S_2= f^{s_h} \pk^ {s_1}, \quad S_3 = g_q^{s_2}, \quad S_4= f^{s_x} \pk^ {s_2},
+	\]
+	Prover sends $( S_1, S_2, S_3,S_4)$ to the verifier.\\
+	
+	\item	Verifier sends $c \xleftarrow{\$}  [0,  q-1]$ to the prover.\\
+	
+	\item	Prover computes:
+	\begin{align*}
+	u_1 &= s_1 + c r_1, ~~ u_2 = s_2 + c r_2, \\
+	u_{h} &= s_{h} + c\cdot h,~~
+	u_{x} = s_{x} + c\cdot Kx,~~
+	\end{align*}
+	Prover finds $d_1,d_2,  d_k \in \mathbb{Z}$ and $e_1,e_2\in [0, q-1]$ s.t. 
+	$u_1 = d_1 q + e_1,~~u_2 = d_2 q + e_2,~~u_h = d_h q + e_h,~~u_x = d_x q + e_x$.
+	Prover computes:
+	\[
+	D_1 = g_q^{d_1},  \quad D_2 = \pk^{d_1},  \quad D_3 = g_q^{d_2},\quad D_4 = \pk^{d_2}.
+	\] 
+	Prover sends $(D_1, D_2, D_3,D_4,e_1,e_2, u_\rho)$ to the verifier.\\
+	
+	\item	The verifier checks if $e_1,e_2,u_\rho \in [0, q-1]$ and:
+	\begin{align*}
+	D_1^q g_q^{e_1} = S_1 x_1^c, \quad D_2^q \pk^{e_1} f^{u_h} = S_2 x_2^c, \ \\
+	D_3^q g_q^{e_2} &= S_3 y_1^c, \quad 	D_4^q \pk^{e_2} f^{u_x} = S_4 y_2^c 
+	\end{align*}
+	
+	
+	If so, the verifier sends $\ell \xleftarrow{\$} {\sf Primes}(\lambda).$\\
+	
+	
+	\item	Prover finds $q_1,q_2, q_k \in \mathbb{Z}$ and $\gamma_1,\gamma_2, \gamma_k \in [0, \ell-1]$ s.t. 
+	$u_1 = q_1\ell + \gamma_1$,$u_2 = q_2\ell + \gamma_2$  and $u_k = q_k \ell + \gamma_k$.
+	Prover computes:
+	\[
+	Q_1 = g_q^{q_1},\quad Q_2 = \pk^{q_1},  \quad Q_3 = g_q^{q_2}, \quad Q_4 = \pk^{q_2},  \quad Q_5 = g_q^{q_k}.
+	\] 
+	Prover sends $(Q_1, Q_2, Q_3,Q_4, Q_5 , \gamma_1, \gamma_2, \gamma_k)$ to the verifier.
+	
+	
+	\item	Verifier accepts if $\gamma_1, \gamma_2, \gamma_k \in [0, \ell-1]$ and:
+	\begin{align*}
+	Q_1^q g_q^{\gamma_1} &= S_1 x_1^c, 
+	\quad Q_2^q \pk^{\gamma_1} f^{u_h} = S_2 x_2^c, \ \\
+	Q_3^q g_q^{\gamma_2} &= S_3 y_1^c, 
+	\quad Q_4^q \pk^{\gamma_2} f^{u_x} = S_4 y_2^c ,
+	\quad Q_5^q g_q^{\gamma_k} = S_5 \pk^c, 
+	\end{align*}
+	
+\end{enumerate}
+
+%
+%	\section{Zero-knowledge Proof with encryption key's well-formedness}
+%Let	$(\tilde{s}, g, f, g_q, \tilde{G}, G, F, G^q) \gets {\sf Gen}_{{\rm HSM}, q}(1^\lambda)$. The ECC group generated by generator $\hat{G}$ has a large prime order $q$.
+%	We need to prove the following relation when sending $(C_1,C_2)$:
+%	\begin{align*}	
+%	&\mathcal{R}_{\sf Enc} = \{ (x_1,x_2,y_1,y_2,\pk,\PK, \hat{G},f,g_q) : (h, K_x, r_1, r_2, \sk) |\PK = \hat{G}^ \SK  \wedge \\
+%	 &x_1 = g_q^{r_1} \wedge x_2 = f^h \pk^ {r_1} \wedge y_1= g_q^{r_2} \wedge y_2= f^{K_x} \pk^ {r_2}
+%	\wedge \pk = g_q^{\sk} \}.
+%	\end{align*}
+%where $B = 2^{\lambda+\epsilon_d+2}  \tilde{s}$, $\epsilon_d = 80$.
+%
+%		\begin{enumerate}
+%
+%			\item		Prover chooses %$\tau, s_\rho, s_\tau 
+%			$s_1, s_2, s_k, s_h, s_x \xleftarrow{\$}  [-B, B]$, $s_\rho \xleftarrow{\$}  \mathbb{Z}_q$ and computes:
+%			\[
+%			%T = g_1^{\rho} g_2^{\tau}, \quad R= g_1^{s_\rho} g_2^{s_\tau}, \quad 
+%			\hat{S}= \hat{G}^{s_\rho}, \quad S_1 =g_q^{s_1}, \quad S_2= f^{s_h} \pk^ {s_1}, \quad S_3 = g_q^{s_2}, \quad S_4= f^{s_x} \pk^ {s_2},\quad  S_5 = g_q^{s_k},
+%			\]
+%			Prover sends $( \hat{S}, S_1, S_2, S_3,S_4,S_5)$ to the verifier.\\
+%			
+%				\item	Verifier sends $c \xleftarrow{\$}  [0,  q-1]$ to the prover.\\
+%			
+%				\item	Prover computes:
+%			\begin{align*}
+%			u_1 &= s_1 + c r_1, ~~ u_2 = s_2 + c r_2, ~~ u_{k} = s_{k} + c\cdot \sk, ~~\\
+%			u_{h} &= s_{h} + c\cdot h,~~
+%			u_{x} = s_{x} + c\cdot Kx,~~
+%			u_\rho = s_\rho + c \cdot \SK \mod q. 
+%			\end{align*}
+%			Prover finds $d_1,d_2,  d_k \in \mathbb{Z}$ and $e_1,e_2, e_k \in [0, q-1]$ s.t. 
+%			$u_1 = d_1 q + e_1,~~u_2 = d_2 q + e_2,~~u_k = d_k q + e_k,~~u_h = d_h q + e_h,~~u_x = d_x q + e_x$.
+%			Prover computes:
+%			\[
+%			D_1 = g_q^{d_1},  \quad D_2 = \pk^{d_1},  \quad D_3 = g_q^{d_2},\quad D_4 = \pk^{d_2}, \quad D_5 = g_q^{d_k}.
+%			\] 
+%			Prover sends $(D_1, D_2, D_3,D_4,D_5,e_1,e_2, e_k ,u_\rho)$ to the verifier.\\
+%			
+%				\item	The verifier checks if $e_1,e_2, e_k,u_\rho \in [0, q-1]$ and:
+%			\begin{align*}
+%			\hat{S} \cdot \PK^c &= \hat{G}^{u_m},\quad D_1^q g_q^{e_1} = S_1 x_1^c, \quad D_2^q \pk^{e_1} f^{u_h} = S_2 x_2^c, \ \\
+%			D_3^q g_q^{e_2} &= S_3 y_1^c, \quad 	D_4^q \pk^{e_2} f^{u_x} = S_4 y_2^c ,\quad D_5^q g_q^{e_k} = S_5 \pk^c, 
+%			\end{align*}
+%			
+%			
+%			If so, the verifier sends $\ell \xleftarrow{\$} {\sf Primes}(\lambda).$\\
+%			
+%			
+%			\item	Prover finds $q_1,q_2, q_k \in \mathbb{Z}$ and $\gamma_1,\gamma_2, \gamma_k \in [0, \ell-1]$ s.t. 
+%			$u_1 = q_1\ell + \gamma_1$,$u_2 = q_2\ell + \gamma_2$  and $u_k = q_k \ell + \gamma_k$.
+%			Prover computes:
+%			\[
+%			Q_1 = g_q^{q_1},\quad Q_2 = \pk^{q_1},  \quad Q_3 = g_q^{q_2}, \quad Q_4 = \pk^{q_2},  \quad Q_5 = g_q^{q_k}.
+%			\] 
+%			Prover sends $(Q_1, Q_2, Q_3,Q_4, Q_5 , \gamma_1, \gamma_2, \gamma_k)$ to the verifier.
+%			
+%			
+%				\item	Verifier accepts if $\gamma_1, \gamma_2, \gamma_k \in [0, \ell-1]$ and:
+%				\begin{align*}
+%				Q_1^q g_q^{\gamma_1} &= S_1 x_1^c, 
+%				\quad Q_2^q \pk^{\gamma_1} f^{u_h} = S_2 x_2^c, \ \\
+%				Q_3^q g_q^{\gamma_2} &= S_3 y_1^c, 
+%				\quad Q_4^q \pk^{\gamma_2} f^{u_x} = S_4 y_2^c ,
+%				\quad Q_5^q g_q^{\gamma_k} = S_5 \pk^c, 
+%				\end{align*}
+%
+%\end{enumerate}
+
+
+		\section{Implementation}
+	We implement the blind ECDSA scheme and our scheme over HSM-CL. ZK part dominates the running time for both schemesur scheme but our ZK waives the need to repeat many rounds to achive a suitable soundness. (ours should be much faster than theirs)
+	
+	
+	to update the running time...
+	
+	\bibliography{IEEEabrv}
+	\bibliographystyle{splncs04}
+	
+
+	
+	% ---- Bibliography ----
+	%
+	% BibTeX users should specify bibliography style 'splncs04'.
+	% References will then be sorted and formatted in the correct style.
+	%
+	% \bibliographystyle{splncs04}
+	% \bibliography{mybibliography}
+	%
+	%\begin{thebibliography}{8}
+	%\bibitem{ref_article1}
+	%Author, F.: Article title. Journal \textbf{2}(5), 99--110 (2016)
+	%
+	%\bibitem{ref_lncs1}
+	%Author, F., Author, S.: Title of a proceedings paper. In: Editor,
+	%F., Editor, S. (eds.) CONFERENCE 2016, LNCS, vol. 9999, pp. 1--13.
+	%Springer, Heidelberg (2016). \doi{10.10007/1234567890}
+	%
+	%\bibitem{ref_book1}
+	%Author, F., Author, S., Author, T.: Book title. 2nd edn. Publisher,
+	%Location (1999)
+	%
+	%\bibitem{ref_proc1}
+	%Author, A.-B.: Contribution title. In: 9th International Proceedings
+	%on Proceedings, pp. 1--2. Publisher, Location (2010)
+	%
+	%\bibitem{ref_url1}
+	%LNCS Homepage, \url{http://www.springer.com/lncs}. Last accessed 4
+	%Oct 2017
+	%\end{thebibliography}
+	
+\end{document}

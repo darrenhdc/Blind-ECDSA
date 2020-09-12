@@ -1,0 +1,11 @@
+group,function,value,throughput_num,throughput_type,sample_measured_value,unit,iteration_count
+AsiaCCS_nizk_prove_2048,,,,,676156500.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,681576593.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,675366293.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,676132596.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,681424741.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,673636397.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,675511192.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,670668017.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,683591829.0,ns,1
+AsiaCCS_nizk_prove_2048,,,,,673866677.0,ns,1

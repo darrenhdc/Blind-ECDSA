@@ -161,7 +161,7 @@ where $B = 2^{\lambda+\epsilon_d+2}  \tilde{s}$, $\epsilon_d = 80$.
 	u_{h} &= s_{h} + c\cdot h,~~
 	u_{x} = s_{x} + c\cdot Kx,~~
 	\end{align*}
-	Prover finds $d_1,d_2,  d_k \in \mathbb{Z}$ and $e_1,e_2\in [0, q-1]$ s.t. 
+	Prover finds $d_1,d_2 \in \mathbb{Z}$ and $e_1,e_2\in [0, q-1]$ s.t. 
 	$u_1 = d_1 q + e_1,~~u_2 = d_2 q + e_2,~~u_h = d_h q + e_h,~~u_x = d_x q + e_x$.
 	Prover computes:
 	\[
@@ -171,7 +171,7 @@ where $B = 2^{\lambda+\epsilon_d+2}  \tilde{s}$, $\epsilon_d = 80$.
 	
 	\item	The verifier checks if $e_1,e_2,u_\rho \in [0, q-1]$ and:
 	\begin{align*}
-	D_1^q g_q^{e_1} = S_1 x_1^c, \quad D_2^q \pk^{e_1} f^{u_h} = S_2 x_2^c, \ \\
+	D_1^q g_q^{e_1} &= S_1 x_1^c, \quad D_2^q \pk^{e_1} f^{u_h} = S_2 x_2^c, \ \\
 	D_3^q g_q^{e_2} &= S_3 y_1^c, \quad 	D_4^q \pk^{e_2} f^{u_x} = S_4 y_2^c 
 	\end{align*}
 	
@@ -179,22 +179,21 @@ where $B = 2^{\lambda+\epsilon_d+2}  \tilde{s}$, $\epsilon_d = 80$.
 	If so, the verifier sends $\ell \xleftarrow{\$} {\sf Primes}(\lambda).$\\
 	
 	
-	\item	Prover finds $q_1,q_2, q_k \in \mathbb{Z}$ and $\gamma_1,\gamma_2, \gamma_k \in [0, \ell-1]$ s.t. 
-	$u_1 = q_1\ell + \gamma_1$,$u_2 = q_2\ell + \gamma_2$  and $u_k = q_k \ell + \gamma_k$.
+	\item	Prover finds $q_1,q_2 \in \mathbb{Z}$ and $\gamma_1,\gamma_2\in [0, \ell-1]$ s.t. 
+	$u_1 = q_1\ell + \gamma_1$ and $u_2 = q_2\ell + \gamma_2$ .
 	Prover computes:
 	\[
-	Q_1 = g_q^{q_1},\quad Q_2 = \pk^{q_1},  \quad Q_3 = g_q^{q_2}, \quad Q_4 = \pk^{q_2},  \quad Q_5 = g_q^{q_k}.
+	Q_1 = g_q^{q_1},\quad Q_2 = \pk^{q_1},  \quad Q_3 = g_q^{q_2}, \quad Q_4 = \pk^{q_2}.
 	\] 
-	Prover sends $(Q_1, Q_2, Q_3,Q_4, Q_5 , \gamma_1, \gamma_2, \gamma_k)$ to the verifier.
+	Prover sends $(Q_1, Q_2, Q_3,Q_4 , \gamma_1, \gamma_2)$ to the verifier.
 	
 	
-	\item	Verifier accepts if $\gamma_1, \gamma_2, \gamma_k \in [0, \ell-1]$ and:
+	\item	Verifier accepts if $\gamma_1, \gamma_2 \in [0, \ell-1]$ and:
 	\begin{align*}
 	Q_1^q g_q^{\gamma_1} &= S_1 x_1^c, 
 	\quad Q_2^q \pk^{\gamma_1} f^{u_h} = S_2 x_2^c, \ \\
 	Q_3^q g_q^{\gamma_2} &= S_3 y_1^c, 
 	\quad Q_4^q \pk^{\gamma_2} f^{u_x} = S_4 y_2^c ,
-	\quad Q_5^q g_q^{\gamma_k} = S_5 \pk^c, 
 	\end{align*}
 	
 \end{enumerate}

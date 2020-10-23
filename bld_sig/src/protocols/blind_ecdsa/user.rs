@@ -200,3 +200,12 @@ impl User_Enc_and_NIZK_hsmcl_GGM {
     }
 
 }
+
+pub fn s4_sig_by_mpaillier(k2: BigInt, c: BigInt, key: Pallier_AsiaCCS_19) -> BigInt {
+    let q = FE::q();
+    let dec = Pallier_AsiaCCS_19::decrypt(&c, key);
+    let k2_inv = k2.invert(&q).unwrap();
+    let prod_ = dec * &k2_inv;
+    let prod = prod_.div_floor(&q);
+    prod
+}

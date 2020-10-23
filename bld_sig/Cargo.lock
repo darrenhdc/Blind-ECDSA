@@ -147,7 +147,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "blind-ecdsa"
+name = "bld-sig"
 version = "0.1.0"
 dependencies = [
  "class_group",

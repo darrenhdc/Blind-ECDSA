@@ -1,21 +1,23 @@
 use class_group::primitives::cl_dl_lcm::HSMCL;
+use class_group::pari_init;
 use curv::cryptographic_primitives::hashing::traits::Hash;
 use curv::arithmetic::traits::Samplable;
 use curv::elliptic::curves::traits::{ECPoint, ECScalar};
 use curv::{FE, GE};
-
-use test::Bencher;
+use bld_sig::protocols::mpaillier::Pallier_AsiaCCS_19;
+use bld_sig::protocols::asiaccs_zk::ZK_AsiaCCS_19;
+use bld_sig::protocols::ggm_zk::zkPoKEncProof_v0;
+use bld_sig::protocols::ggm_zk::zkPoKEncProof;
 use criterion::criterion_main;
+
+// three pleaces need to be set: lib.rs, man.rs, zk_bench.rs
+const SECURITY_PARAMETER: usize = 80;
 
 mod bench {
     use criterion::{criterion_group, Criterion};
     use crate::*;
     use curv::cryptographic_primitives::hashing::hash_sha256::HSha256;
     use curv::BigInt;
-    use blind_ecdsa::protocols::mpaillier::Pallier_AsiaCCS_19;
-    use blind_ecdsa::protocols::asiaccs_zk::ZK_AsiaCCS_19;
-    use blind_ecdsa::protocols::ggm_zk::zkPoKEncProof_v0;
-    use blind_ecdsa::protocols::ggm_zk::zkPoKEncProof;
 
     pub fn AsiaCCS_nizk_prove_2048(c: &mut Criterion) {
         c.bench_function("AsiaCCS_nizk_prove_2048", move |b| {
@@ -575,18 +577,18 @@ mod bench {
         config = Criterion::default().sample_size(10);
         targets = 
         self::AsiaCCS_nizk_prove_2048,
-        self::AsiaCCS_nizk_prove_3072,
-        self::AsiaCCS_nizk_prove_4096,
+        // self::AsiaCCS_nizk_prove_3072,
+        // self::AsiaCCS_nizk_prove_4096,
 
-        self::AsiaCCS_nizk_verify_2048,
-        self::AsiaCCS_nizk_verify_3072,
-        self::AsiaCCS_nizk_verify_4096,
+        // self::AsiaCCS_nizk_verify_2048,
+        // self::AsiaCCS_nizk_verify_3072,
+        // self::AsiaCCS_nizk_verify_4096,
 
-        self::hsmcl_nizk_prove_112_v0,
-        self::hsmcl_nizk_prove_128_v0,
+        // self::hsmcl_nizk_prove_112_v0,
+        // self::hsmcl_nizk_prove_128_v0,
 
-        self::hsmcl_nizk_verify_112_v0,
-        self::hsmcl_nizk_verify_128_v0,
+        // self::hsmcl_nizk_verify_112_v0,
+        // self::hsmcl_nizk_verify_128_v0,
 
         // self::hsmcl_nizk_prove_112,
         // self::hsmcl_nizk_prove_128,

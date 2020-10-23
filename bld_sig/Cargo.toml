@@ -1,14 +1,17 @@
 [package]
-name = "gq_sig"
+name = "blind-ecdsa"
 version = "0.1.0"
 authors = ["hdcui <hdcui@cs.hku.hk>"]
 edition = "2018"
+keywords = [
+    "ecdsa",
+    "blind-ecdsa",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 paillier = { git = "https://github.com/KZen-networks/rust-paillier", tag = "v0.3.4" }
-class_group = { path = "../class" }
 #rand = "0.7.0"
 libc = "0.2.0"
 serde = "1.0"
@@ -21,7 +24,12 @@ rocket = { version = "0.4.2", default-features = false }
 rocket_contrib = "0.4.2"
 reqwest = { version = "0.9", default-features = false }
 uuid = { version = "0.8", features = ["v4"] }
+# class_group = { path = "../../../class" }
 
+# [dependencies.class_group]
+# git = "https://github.com/KZen-networks/class"
+# tag = "v0.4.16"
+# optional = true
 
 
 [dependencies.curv]
@@ -34,11 +42,20 @@ features = ["ec_secp256k1"]
 #git = "https://github.com/RustCrypto/RSA"
 #tag = "v0.3.0"
 
-#[dependencies.class_group]
-#git = "https://github.com/KZen-networks/class"
-#tag = "v0.4.13"
+# [dependencies.class_group]
+# git = "https://github.com/KZen-networks/class"
+# tag = "v0.4.13"
+
+[dependencies.class_group]
+git = "https://github.com/darrenhdc/class"
+
+
+# [[bench]]
+# name = "main"
+# path = "src/main.rs"
+# harness = false
 
 [[bench]]
-name = "main"
-path = "src/main.rs"
+name = "nizk"
+path = "benches/zk_bench.rs"
 harness = false

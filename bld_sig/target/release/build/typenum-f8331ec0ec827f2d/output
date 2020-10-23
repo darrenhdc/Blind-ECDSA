@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/hdcui/NIZKs-for-AsiaCCS19-and-HSM-CL/bld_sig/target/release/build/typenum-f8331ec0ec827f2d/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/hdcui/NIZKs-for-AsiaCCS19-and-HSM-CL/bld_sig/target/release/build/typenum-f8331ec0ec827f2d/out/op.rs

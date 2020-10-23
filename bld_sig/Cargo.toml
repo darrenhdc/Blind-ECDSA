@@ -25,6 +25,7 @@ rocket = { version = "0.4.2", default-features = false }
 rocket_contrib = "0.4.2"
 reqwest = { version = "0.9", default-features = false }
 uuid = { version = "0.8", features = ["v4"] }
+libsecp256k1 = "0.3.2"
 # class_group = { path = "../../../class" }
 
 # [dependencies.class_group]

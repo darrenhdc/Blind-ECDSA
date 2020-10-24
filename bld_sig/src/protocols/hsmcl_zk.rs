@@ -46,10 +46,10 @@ pub struct Witness {
 
 // forked from Zen-Go's code, fix a problem in && operation
 impl CLDLProof_modified {
-    pub fn prove(w: Witness, pk: PK, ciphertext: Ciphertext, q: GE, seed: BigInt, C: usize,) -> Self {
+    pub fn prove(w: Witness, pk: PK, ciphertext: Ciphertext, q: GE, seed: BigInt, c: usize,) -> Self {
         unsafe { pari_init(100000000, 2) };
         // let repeat = SECURITY_PARAMETER / C + 1;
-        let repeat = 80 / C;
+        let repeat = 80 / c;
         let triplets_and_fs_and_r_vec = (0..repeat)
             .map(|_| {
                 // let r1 = BigInt::sample_below(
@@ -123,7 +123,7 @@ impl CLDLProof_modified {
         }
     }
 
-    pub fn verify(&self, C: usize,) -> Result<(), ProofError> {
+    pub fn verify(&self, c: usize,) -> Result<(), ProofError> {
         unsafe { pari_init(100000000, 2) };
         let mut flag = true;
 
@@ -133,7 +133,7 @@ impl CLDLProof_modified {
 
         // reconstruct k
         // let repeat = SECURITY_PARAMETER / C + 1;
-        let repeat = 80 / C;
+        let repeat = 80 / c;
         let fs_vec = (0..repeat)
             .map(|i| {
                 HSha256::create_hash(&[

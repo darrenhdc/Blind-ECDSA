@@ -8,6 +8,9 @@ use bld_sig::protocols::mpaillier::Pallier_AsiaCCS_19;
 use bld_sig::protocols::asiaccs_zk::ZK_AsiaCCS_19;
 use bld_sig::protocols::ggm_zk::zkPoKEncProof_v0;
 use bld_sig::protocols::ggm_zk::zkPoKEncProof;
+use bld_sig::protocols::blind_ecdsa::test_sign::test_sign_mpaillier;
+use bld_sig::protocols::blind_ecdsa::test_sign::test_sign_hsmcl;
+use bld_sig::protocols::blind_ecdsa::test_sign::test_sign_hsmcl_ggm;
 use criterion::criterion_main;
 
 // three pleaces need to be set: lib.rs, man.rs, zk_bench.rs
@@ -18,6 +21,56 @@ mod bench {
     use crate::*;
     use curv::cryptographic_primitives::hashing::hash_sha256::HSha256;
     use curv::BigInt;
+
+    pub fn blind_sign_by_modified_paillier_2048(c: &mut Criterion) {
+        c.bench_function("blind_sign_by_modified_paillier", move |b| {
+            let bitsize = 2048;
+            let message = HSha256::create_hash(&[&BigInt::from(111)]).mod_floor(&FE::q()); 
+            b.iter(||
+                test_sign_mpaillier(&bitsize, &message)     
+            )
+        });
+    }
+
+    pub fn blind_sign_by_hsmcl_112_sec(c: &mut Criterion) {
+        c.bench_function("blind_sign_by_hsmcl_112_sec", move |b| {
+            let lam = 1348;
+            let message = HSha256::create_hash(&[&BigInt::from(111)]).mod_floor(&FE::q()); 
+            b.iter(||
+                test_sign_hsmcl(&lam, &message)     
+            )
+        });
+    }
+
+    pub fn blind_sign_by_hsmcl_128_sec(c: &mut Criterion) {
+        c.bench_function("blind_sign_by_hsmcl_128_sec", move |b| {
+            let lam = 1827;
+            let message = HSha256::create_hash(&[&BigInt::from(111)]).mod_floor(&FE::q()); 
+            b.iter(||
+                test_sign_hsmcl(&lam, &message)     
+            )
+        });
+    }
+
+    pub fn blind_sign_by_hsmcl_ggm_nizk_112_sec(c: &mut Criterion) {
+        c.bench_function("blind_sign_by_hsmcl_ggm_nizk_112_sec", move |b| {
+            let lam = 1348;
+            let message = HSha256::create_hash(&[&BigInt::from(111)]).mod_floor(&FE::q()); 
+            b.iter(||
+                test_sign_hsmcl_ggm(&lam, &message)     
+            )
+        });
+    }
+
+    pub fn blind_sign_by_hsmcl_ggm_nizk_128_sec(c: &mut Criterion) {
+        c.bench_function("blind_sign_by_hsmcl_ggm_nizk_128_sec", move |b| {
+            let lam = 1827;
+            let message = HSha256::create_hash(&[&BigInt::from(111)]).mod_floor(&FE::q()); 
+            b.iter(||
+                test_sign_hsmcl_ggm(&lam, &message)     
+            )
+        });
+    }
 
     pub fn AsiaCCS_nizk_prove_2048(c: &mut Criterion) {
         c.bench_function("AsiaCCS_nizk_prove_2048", move |b| {
@@ -576,7 +629,7 @@ mod bench {
         name = benchmarks;
         config = Criterion::default().sample_size(10);
         targets = 
-        self::AsiaCCS_nizk_prove_2048,
+        // self::AsiaCCS_nizk_prove_2048,
         // self::AsiaCCS_nizk_prove_3072,
         // self::AsiaCCS_nizk_prove_4096,
 
@@ -595,6 +648,10 @@ mod bench {
 
         // self::hsmcl_nizk_verify_112,
         // self::hsmcl_nizk_verify_128,
+        self::blind_sign_by_modified_paillier_2048,
+        self::blind_sign_by_hsmcl_112_sec,
+        self::blind_sign_by_hsmcl_128_sec,
+
     }
 }
 
